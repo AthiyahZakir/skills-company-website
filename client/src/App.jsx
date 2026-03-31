@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
-import Signup from './pages/Signup'
+import Signup from './pages/SignUp'
 
 function App() {
   return (
