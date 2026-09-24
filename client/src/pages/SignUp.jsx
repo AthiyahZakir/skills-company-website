@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+
+// ⚙️ Change this to your live backend URL after deploying
+const API_URL = 'https://your-backend-url.onrender.com/api/submit-form'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -16,12 +19,19 @@ export default function Signup() {
     declarationName: '', declarationDate: '', declarationAgreed: false,
   })
 
+  const [cvFile, setCvFile] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const cvInputRef = useRef(null)
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+  }
+
+  const handleCvChange = (e) => {
+    const file = e.target.files[0]
+    if (file) setCvFile(file)
   }
 
   const handleSubmit = async (e) => {
@@ -32,13 +42,19 @@ export default function Signup() {
     }
     setSubmitting(true)
     try {
-      const response = await fetch('http://localhost:5000/api/submit-form', {
+      // Use FormData so we can include the CV file
+      const payload = new FormData()
+      Object.entries(formData).forEach(([key, val]) => payload.append(key, val))
+      if (cvFile) payload.append('cv', cvFile)
+
+      const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: payload, // No Content-Type header — browser sets it with boundary
       })
-      if (response.ok) setSubmitted(true)
-      else alert('Something went wrong. Please try again.')
+
+      const result = await response.json()
+      if (response.ok && result.success) setSubmitted(true)
+      else alert(result.message || 'Something went wrong. Please try again.')
     } catch {
       alert('Could not connect to server. Please try again.')
     } finally {
@@ -317,10 +333,24 @@ export default function Signup() {
             <p className="text-xs text-gray-400 mb-4 -mt-3">(Please upload your resume if you have any working experience)</p>
             <div className="mb-4">
               <label className={label}>Upload your CV/Resume</label>
-              <label className="inline-flex items-center gap-2 mt-1 px-6 py-2.5 rounded-full text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition cursor-pointer shadow-sm">
-                📎 Upload CV
-                <input type="file" accept=".pdf,.doc,.docx" className="hidden" />
-              </label>
+              <div className="flex items-center gap-3 mt-1">
+                <label className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition cursor-pointer shadow-sm">
+                  📎 {cvFile ? 'Change CV' : 'Upload CV'}
+                  <input
+                    ref={cvInputRef}
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={handleCvChange}
+                  />
+                </label>
+                {cvFile && (
+                  <span className="text-xs text-gray-600 font-semibold bg-gray-100 px-3 py-1.5 rounded-full">
+                    ✅ {cvFile.name}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Accepted: PDF, DOC, DOCX (max 5MB)</p>
             </div>
 
             {/* DISABILITY */}
