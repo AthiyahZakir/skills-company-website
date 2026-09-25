@@ -29,8 +29,8 @@ const team = [
 ]
 
 const slides = [
-  { type: 'image', src: '/hero.jpg', caption: 'Orientation day — where every cohort begins.' },
-  { type: 'image', src: '/hero2.jpg', caption: 'Hands-on, every single day.' },
+  { type: 'image', src: `${import.meta.env.BASE_URL}hero.jpg`, caption: 'Orientation day — where every cohort begins.' },
+  { type: 'image', src: `${import.meta.env.BASE_URL}hero2.jpg`, caption: 'Hands-on, every single day.' },
   { type: 'image', src: 'https://picsum.photos/seed/graduation-2024/1200/675', caption: 'Graduation Day 2024' },
   { type: 'image', src: 'https://picsum.photos/seed/campus-hackathon/1200/675', caption: 'Campus Hackathon Weekend' },
   { type: 'image', src: 'https://picsum.photos/seed/student-showcase/1200/675', caption: 'Student Showcase Night' },

@@ -113,7 +113,7 @@ export default function Home() {
      <section className="relative min-h-screen flex items-center overflow-hidden">
 
       <img 
-  src="/hero.jpg" 
+  src={`${import.meta.env.BASE_URL}hero.jpg`}
   alt="hero" 
   className="absolute inset-0 w-full h-full object-cover"
 />
