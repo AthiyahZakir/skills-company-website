@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 // ⚙️ Change this to your live backend URL after deploying
-const API_URL = 'https://your-backend-url.onrender.com/api/submit-form'
+const API_URL = 'http://localhost:5000/api/submit-form'
 
 export default function Signup() {
   const [formData, setFormData] = useState({

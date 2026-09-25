@@ -5,7 +5,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm">
-      
+
       {/* LOGO */}
       <Link to="/" className="flex items-center gap-2">
         <span className="text-2xl font-black text-gray-900 tracking-tight">
